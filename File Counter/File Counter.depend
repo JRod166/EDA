@@ -1,0 +1,11 @@
+# depslib dependency file v1.0
+1535500271 source:c:\users\rodrigo\documents\github\eda\file counter\main.cpp
+	<iostream>
+	<windows.h>
+	<dirent.h>
+	<vector>
+	<fstream>
+	<string>
+	<algorithm>
+	<ctype.h>
+
