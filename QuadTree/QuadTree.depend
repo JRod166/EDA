@@ -1,0 +1,40 @@
+# depslib dependency file v1.0
+1537976434 source:c:\users\rodrigo\documents\github\eda\quadtree\src\node.cpp
+	"node.h"
+
+1537976279 c:\users\rodrigo\documents\github\eda\quadtree\include\node.h
+	<utility>
+	<vector>
+	<math.h>
+
+1537974789 source:c:\users\rodrigo\documents\github\eda\quadtree\src\qt.cpp
+	"qt.h"
+
+1537974809 c:\users\rodrigo\documents\github\eda\quadtree\include\qt.h
+	<utility>
+	<vector>
+	<math.h>
+	"node.h"
+	<iostream>
+
+1537976434 source:c:\users\rodrigo\documents\github\eda\quadtree\main.cpp
+	<windows.h>
+	<ctype.h>
+	<math.h>
+	<GL/glut.h>
+	<iostream>
+	"quadTree.h"
+	<string>
+	<fstream>
+
+976692172 c:\users\rodrigo\desktop\glut\include\gl\glut.h
+	<windows.h>
+	<GL/gl.h>
+	<GL/glu.h>
+
+1537976499 c:\users\rodrigo\documents\github\eda\quadtree\include\quadtree.h
+	"node.h"
+
+1537976499 source:c:\users\rodrigo\documents\github\eda\quadtree\src\quadtree.cpp
+	"quadTree.h"
+
