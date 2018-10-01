@@ -17,13 +17,14 @@
 	"node.h"
 	<iostream>
 
-1537976434 source:c:\users\rodrigo\documents\github\eda\quadtree\main.cpp
+1538243928 source:c:\users\rodrigo\documents\github\eda\quadtree\main.cpp
 	<windows.h>
 	<ctype.h>
 	<math.h>
 	<GL/glut.h>
 	<iostream>
 	"quadTree.h"
+	<vector>
 	<string>
 	<fstream>
 
@@ -32,9 +33,10 @@
 	<GL/gl.h>
 	<GL/glu.h>
 
-1537976499 c:\users\rodrigo\documents\github\eda\quadtree\include\quadtree.h
+1538242760 c:\users\rodrigo\documents\github\eda\quadtree\include\quadtree.h
 	"node.h"
 
-1537976499 source:c:\users\rodrigo\documents\github\eda\quadtree\src\quadtree.cpp
+1538243477 source:c:\users\rodrigo\documents\github\eda\quadtree\src\quadtree.cpp
 	"quadTree.h"
+	<iostream>
 

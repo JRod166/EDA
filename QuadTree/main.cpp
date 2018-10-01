@@ -6,19 +6,79 @@
 #include <iostream>
 #include "quadTree.h"
 #define KEY_ESC 27
+#include <vector>
 
 #include <string>
 
 #include <fstream>
 
-
+#define PI 3.1415926535897932384626433832795
+int radio=50;
+double px,py;
 
 //Crear quad tree
-
-
 //dibuja un simple
-
 quadTree QT (4,300,300);
+vector <vector <string> > characteristics;
+vector <point> area;
+
+void DrawCircle(double cx, double cy, double r, int num_segments) {
+    glBegin(GL_LINE_LOOP);
+    double x,y,theta;
+    glColor3d(255,0,0);
+    //cout<<"RADIOO"<<radio<<endl;
+    for (int ii = 0; ii < num_segments; ii++)   {
+        theta = 2.0f * 3.1415926f * double(ii) / double(num_segments);//get the current angle
+        x = r * cosf(theta);//calculate the x component
+        y = r * sinf(theta);//calculate the y component
+        //cout<<"["<<x+cx<<","<<y+cy<<"]\t";
+        glVertex2d(x + cx, y + cy);//output vertex
+    }
+
+    //cout << endl;
+    glEnd();
+}
+
+void extractcharacteristics()
+{
+    string aux;
+    fstream input;
+    vector<string > vec_aux;
+    input.open("C:/Users/Rodrigo/Documents/GitHub/EDA/QuadTree/country-capitals.csv",std::ifstream::in);
+	if(!input.is_open())
+        cout<<"no se pudo abrir archivo";
+	char c;
+	while (input.get(c))
+    {
+        if(c=='\n')
+        {
+            characteristics.push_back(vec_aux);
+            vec_aux.clear();
+        }
+        else if(c!=';')
+        {
+            aux+=c;
+        }
+        else
+        {
+            vec_aux.push_back(aux);
+            aux="";
+        }
+    }
+}
+
+void insertPoints(int xposition, int yposition)
+{
+    double auxx,auxy;
+    for (int i=1; i<characteristics.size();i++)
+    {
+        auxx=stod(characteristics[i][xposition])/*/41.84307539)-1)*40000*/;
+        auxy=stod(characteristics[i][yposition])/*/-87.67370828)-1)*40000*/;
+        cout<<i<<". Adding point: ( "<<auxx<<" , "<<auxy<<" )"<<endl;
+        QT.addpoint(make_pair(auxx,auxy));
+    }
+}
+
 void displayGizmo()
 {
 	glBegin(GL_LINES);
@@ -83,8 +143,12 @@ void OnMouseClick(int button, int state, int x, int y)
 
 void OnMouseMotion(int x, int y)
 {
-     //opcional
-	 //hacer algo x,z cuando se mueve el mouse
+    //Cpunto p(x,tamanho-y);
+    //Cpunto t = encuadrar_punto(p);
+    //radio = (double)(qt->m_qtfin.m_x - qt->m_qtini.m_x)/10;
+    px = x-300;
+    py = 300-y;
+    area=QT.findcircle(make_pair(px*1.0,py*1.0),radio);
 }
 
 
@@ -100,11 +164,21 @@ void glPaint(void) {
 	glClear(GL_COLOR_BUFFER_BIT); //CAMBIO
 	glLoadIdentity();
 	glOrtho(-300.0f,  300.0f,-300.0f, 300.0f, -1.0f, 1.0f);
-
+    DrawCircle(px,py,radio,100);
 	//dibujar quadTree (qt->draw())
 
 	//dibuja el gizmo
 	drawqt(&QT.root);///displayGizmo();
+
+	glBegin(GL_POINTS);
+	glPointSize(3);
+	glColor3d(255,255,255);
+	for(int i=0;i<area.size();i++)
+    {
+        glVertex2d(area[i].first,area[i].second);
+        //cout<<"punto: "<<area[i].first<<" , "<<area[i].second<<endl;
+    }
+	glEnd();
 
 	//doble buffer, mantener esta instruccion al fin de la funcion
 	glutSwapBuffers();
@@ -146,50 +220,14 @@ GLvoid window_key(unsigned char key, int x, int y) {
 //el programa principal
 //
 int main(int argc, char** argv) {
-
 	//Inicializacion de la GLUT
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
 	glutInitWindowSize(600, 600); //tamaño de la ventana
 	glutInitWindowPosition(100, 100); //posicion de la ventana
 	glutCreateWindow("QuadTree"); //titulo de la ventana
-	ifstream input;
-	string num,num2;
-
-	input.open("C:/Users/Rodrigo/Documents/GitHub/EDA/QuadTree/cc.txt",std::ifstream::in);
-	if(!input.is_open())
-        cout<<"no se pudo abrir archivo";
-	char c;
-	while (input.get(c))
-    {
-
-        if (isdigit(c))
-            num+=c;
-        else if(c=='.' || c=='-')
-        {
-                char temp=c;
-                input.get(c);
-                if (isdigit(c)){
-                    num+=temp;
-                    num+=c;
-                }
-        }
-        else if (c==',')
-        {
-            if(num.size()>0 && num2.size()==0)
-            {
-                num2=num;
-                num="";
-            }
-            else if (num.size()>0 && num2.size()>0)
-            {
-                QT.addpoint(make_pair(stod(num2),stod(num)));
-                cout<<"Adding point: ( "<<num2<<" , "<<num<<" )"<<endl;
-                num=num2="";
-            }
-
-        }
-    }
+	extractcharacteristics();
+	insertPoints(2,3);
 
 	init_GL(); //funcion de inicializacion de OpenGL
 	glPointSize(1.5);
