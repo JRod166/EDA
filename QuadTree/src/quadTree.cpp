@@ -3,6 +3,7 @@
 
 using namespace std;
 
+int cont=0;
 quadTree::quadTree()
 {
     //ctor
@@ -87,65 +88,46 @@ void quadTree::split(node**& zone )
 
 }
 
-vector<node*> quadTree::findcircleareas(point A, int radio)
+void quadTree::incircle(node* p,vector<point>* points,point A, int radio)
 {
-    node **p;
-    vector<node*> zones;
-    p=&root;
-    int ind=-1;
-    typecor dis=(*p)->cmax.first-(*p)->cmin.first;
-    dis/=2;
-    while ((*p)->children[0])
+        ///recorrido
+    ///if nodo hoja in circulo add all puntos
+    ///else
+    ///for each punto in hoja
+    /// if punto in circulo add punto
+
+    for(int son2visit=0;son2visit<4;son2visit++)
     {
-        for(int i=0;i<4;i++)
+        if(p->children[son2visit])
         {
-            point B=make_pair((*p)->cmax.first,(*p)->cmin.second);
-            point C=make_pair((*p)->cmin.first,(*p)->cmax.second);
-            if(distancia(A,(*p)->cmin)<=radio || distancia(A,(*p)->cmax)<=radio || distancia(A,B)<=radio || distancia(A,C)<=radio   )
-            {
-                zones.push_back((*p)->children[i]);
-            }
-        }
-        dis=(*p)->cmax.first-(*p)->cmin.first;
-        dis/=2;
-        ind=-1;
-        if (A.first>=(*p)->cmax.first-dis){
-            ind+=2;
+            incircle(p->children[son2visit],(points),A,radio);
         }
         else
         {
-            ind++;
-        }
-        if (A.second>=(*p)->cmax.second-dis)
-        {
-            ind+=2;
-        }
-        p=&((*p)->children[ind]);
-    }
-    zones.push_back((*p));
-    return zones;
-}
-
-vector <point> quadTree::findcircle(point A,int radio)
-{
-    vector< node*> zones;
-    vector <point> res;
-    node  **p;
-    zones=findcircleareas(A,radio);
-    cout<<zones.size()<<endl;
-    for(int i=0;i<zones.size();i++)
-    {
-        for(int j=0;j<zones[i]->data.size();j++)
-        {
-            if(distancia(A,zones[i]->data[j])<=radio)
+            point B,C;
+            B=make_pair(p->cmax.first,p->cmin.second);
+            C=make_pair(p->cmin.first,p->cmax.second);
+            if(distancia(A,p->cmax)<=radio && distancia(A,p->cmin)<=radio && distancia(A,B)<=radio && distancia(A,C)<=radio)
             {
-                res.push_back(zones[i]->data[j]);
+                points->insert(points->end(),p->data.begin(),p->data.end());
             }
+            else
+            {
+                for(int j=0;j<p->data.size();j++)
+                {
+                    if(distancia(p->data[j],A)<=radio)
+                    {
+                        points->push_back(p->data[j]);
+                    }
+                }
+            }
+
+            break;
         }
     }
-    return res;
-
 }
+
+
 
 
 quadTree::~quadTree()

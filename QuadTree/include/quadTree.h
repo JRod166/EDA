@@ -15,8 +15,7 @@ class quadTree
         void qtrangefind (point A, node**& p);
         void addpoint (point A);
         void split(node**& zone);
-        vector <node*> findcircleareas(point A, int radio);
-        vector <point> findcircle(point A,int radio);
+        void incircle(node* p,vector<point>* points,point A, int radio);
         double distancia(point A,point B);
         virtual ~quadTree();
 

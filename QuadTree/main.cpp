@@ -18,7 +18,7 @@ double px,py;
 
 //Crear quad tree
 //dibuja un simple
-quadTree QT (4,300,300);
+quadTree QT (50,300,300);
 vector <vector <string> > characteristics;
 vector <point> area;
 
@@ -44,7 +44,7 @@ void extractcharacteristics()
     string aux;
     fstream input;
     vector<string > vec_aux;
-    input.open("C:/Users/Rodrigo/Documents/GitHub/EDA/QuadTree/country-capitals.csv",std::ifstream::in);
+    input.open("C:/Users/Rodrigo/Documents/GitHub/EDA/QuadTree/crime50k.csv",std::ifstream::in);
 	if(!input.is_open())
         cout<<"no se pudo abrir archivo";
 	char c;
@@ -72,8 +72,8 @@ void insertPoints(int xposition, int yposition)
     double auxx,auxy;
     for (int i=1; i<characteristics.size();i++)
     {
-        auxx=stod(characteristics[i][xposition])/*/41.84307539)-1)*40000*/;
-        auxy=stod(characteristics[i][yposition])/*/-87.67370828)-1)*40000*/;
+        auxx=((stod(characteristics[i][xposition])/41.84307539)-1)*40000;
+        auxy=((stod(characteristics[i][yposition])/-87.67370828)-1)*40000;
         cout<<i<<". Adding point: ( "<<auxx<<" , "<<auxy<<" )"<<endl;
         QT.addpoint(make_pair(auxx,auxy));
     }
@@ -136,6 +136,7 @@ void OnMouseClick(int button, int state, int x, int y)
   if (button == GLUT_LEFT_BUTTON  && state == GLUT_DOWN)
   {
     QT.addpoint(make_pair((x-300)*1.0,(300-y)*1.0));
+    cout<<". Adding point( "<<x-300<<" , "<<300-y<<")"<<endl;
     //convertir x,y
 	//insertar un nuevo punto en el quadtree
   }
@@ -148,7 +149,8 @@ void OnMouseMotion(int x, int y)
     //radio = (double)(qt->m_qtfin.m_x - qt->m_qtini.m_x)/10;
     px = x-300;
     py = 300-y;
-    area=QT.findcircle(make_pair(px*1.0,py*1.0),radio);
+    area.resize(0);
+    QT.incircle(QT.root,&area,make_pair(px*1.0,py*1.0),radio);
 }
 
 
@@ -227,7 +229,7 @@ int main(int argc, char** argv) {
 	glutInitWindowPosition(100, 100); //posicion de la ventana
 	glutCreateWindow("QuadTree"); //titulo de la ventana
 	extractcharacteristics();
-	insertPoints(2,3);
+	insertPoints(19,20);
 
 	init_GL(); //funcion de inicializacion de OpenGL
 	glPointSize(1.5);
