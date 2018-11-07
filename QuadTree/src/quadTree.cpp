@@ -100,7 +100,13 @@ void quadTree::incircle(node* p,vector<point>* points,point A, int radio)
     {
         if(p->children[son2visit])
         {
-            incircle(p->children[son2visit],(points),A,radio);
+            if(A.first-radio <= p->cmax.first && A.first+radio >= p->cmin.first)
+            {
+                if(A.second-radio<= p->cmax.second && A.second+radio>= p->cmin.second)
+                {
+                    incircle(p->children[son2visit],(points),A,radio);
+                }
+            }
         }
         else
         {
