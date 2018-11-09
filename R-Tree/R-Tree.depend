@@ -1,0 +1,30 @@
+# depslib dependency file v1.0
+1541723469 source:c:\users\rodrigo\documents\github\eda\r-tree\main.cpp
+	<windows.h>
+	<iostream>
+	<math.h>
+	<GL/glut.h>
+	"RTree.h"
+	<fstream>
+	<string>
+
+976692172 c:\users\rodrigo\desktop\glut\include\gl\glut.h
+	<windows.h>
+	<GL/gl.h>
+	<GL/glu.h>
+
+1541723507 source:c:\users\rodrigo\documents\github\eda\r-tree\src\rtree.cpp
+	"RTree.h"
+
+1541712616 c:\users\rodrigo\documents\github\eda\r-tree\include\rtree.h
+	<Node.h>
+
+1541697324 source:c:\users\rodrigo\documents\github\eda\r-tree\src\node.cpp
+	"Node.h"
+
+1541694286 c:\users\rodrigo\documents\github\eda\r-tree\include\node.h
+	<utility>
+	<vector>
+	<cmath>
+	<iostream>
+
