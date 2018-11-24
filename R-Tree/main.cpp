@@ -11,9 +11,11 @@
 using namespace std;
 
 //Crear quad tree
-RTree RT(500);
-int r=0,g=0,b=255;
+RTree RT(100);
+typecor radio=30;
+double px,py;
 vector<vector<string>> characteristics;
+vector<point> Area;
 
 void extractcharacteristics()
 {
@@ -48,12 +50,26 @@ void insertPoints(int xposition, int yposition)
     double auxx,auxy;
     for (int i=1; i<characteristics.size();i++)
     {
-        auxx=((stod(characteristics[i][xposition])/41.84307539)-1)*40000;
-        auxy=((stod(characteristics[i][yposition])/-87.67370828)-1)*40000;
+        auxx=((stod(characteristics[i][xposition])/41.84307539)-1)*60000;
+        auxy=((stod(characteristics[i][yposition])/-87.67370828)-1)*60000;
         cout<<i<<". Adding point: ( "<<auxx<<" , "<<auxy<<" )"<<endl;
         RT.Insert(make_pair(auxx,auxy));
     }
 }
+
+void DrawCircle(double cx, double cy, double r, int num_segments) {
+    glBegin(GL_LINE_LOOP);
+    double x,y,theta;
+    glColor3d(255,255,255);
+    for (int ii = 0; ii < num_segments; ii++)   {
+        theta = 2.0f * 3.1415926f * double(ii) / double(num_segments);//get the current angle
+        x = r * cosf(theta);//calculate the x component
+        y = r * sinf(theta);//calculate the y component
+        glVertex2d(x + cx, y + cy);//output vertex
+    }
+    glEnd();
+}
+
 
 
 
@@ -70,40 +86,39 @@ void displayGizmo()
 	glEnd();
 }
 
-void drawrt (Node** p,int jump)
+void drawrt (Node** p)
 {
-    r=(0+jump*20)%255;
-    g=(0+jump*20)%255;
-    if(!RT.root){return;}
+    if ((*p)->data!=0)
+    {
+        glBegin(GL_POINTS);
+        glColor3d(255,67,0);
+        glVertex2d((*p)->data->first, (*p)->data->second);
+        glEnd();
+    return;
+    }
+    //typecor dis=(*p)->cmax.first-(*p)->cmin.first;
+    //dis/=2;
     typecor miniX,miniY,maxiX,maxiY;
     miniX=(*p)->cmin.first;
     miniY=(*p)->cmin.second;
     maxiX=(*p)->cmax.first;
     maxiY=(*p)->cmax.second;
     glBegin(GL_LINES);
-    glColor3d(r,g,b);
-    glVertex2d(miniX,miniY);
-    glVertex2d(maxiX,miniY);
-    glColor3d(r,g,b);
-    glVertex2d(miniX,miniY);
-    glVertex2d(miniX,maxiY);
-    glColor3d(r,g,b);
-    glVertex2d(miniX,maxiY);
-    glVertex2d(maxiX,maxiY);
-    glColor3d(r,g,b);
-    glVertex2d(maxiX,miniY);
-    glVertex2d(maxiX,maxiY);
-    glEnd();
-    for(int i=0;i<(*p)->data.size();i++)
-    {
-        glBegin(GL_POINTS);
-        glColor3d(0,255,0);
-        glVertex2d((*p)->data[i].first, (*p)->data[i].second);
-        glEnd();
-    }
-    jump++;
+    glColor3d(255,50,50);
+	glVertex2d(miniX,miniY);
+	glVertex2d(maxiX,miniY);
+	glColor3d(255,50, 50);
+	glVertex2d(maxiX,miniY);
+	glVertex2d(maxiX,maxiY);
+	glColor3d(255,50,50);
+	glVertex2d(miniX,maxiY);
+	glVertex2d(maxiX,maxiY);
+	glColor3d(255,50, 50);
+	glVertex2d(miniX,miniY);
+	glVertex2d(miniX,maxiY);
+	glEnd();
 	for (int i=0;i<(*p)->children.size();i++){
-        drawrt(&((*p)->children[i]),jump);
+        drawrt(&((*p)->children[i]));
        // cout<<"I:"<<i<<endl;
 	}
 }
@@ -128,6 +143,11 @@ void OnMouseMotion(int x, int y)
 {
      //opcional
 	 //hacer algo x,z cuando se mueve el mouse
+    px = x-300;
+    py = 300-y;
+    Area.resize(0);
+    RT.circle(RT.root,&Area,make_pair(px*1.0,py*1.0),radio);
+
 }
 
 
@@ -143,11 +163,21 @@ void glPaint(void) {
 	glClear(GL_COLOR_BUFFER_BIT); //CAMBIO
 	glLoadIdentity();
 	glOrtho(-300.0f,  300.0f,-300.0f, 300.0f, -1.0f, 1.0f);
-
+    DrawCircle(px,py,radio,100);
 	//dibujar quadTree (qt->draw())
 
+
 	//dibuja el gizmo
-	drawrt(&RT.root,0);
+	drawrt(&RT.root);
+	glBegin(GL_POINTS);
+	glPointSize(3);
+	glColor3d(255,255,255);
+	for(int i=0;i<Area.size();i++)
+    {
+        glVertex2d(Area[i].first,Area[i].second);
+        //cout<<"punto: "<<Area[i].first<<" , "<<Area[i].second<<endl;
+    }
+	glEnd();
 	displayGizmo();
 
 	//doble buffer, mantener esta instruccion al fin de la funcion

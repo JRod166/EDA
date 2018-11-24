@@ -18,7 +18,7 @@ double px,py;
 
 //Crear quad tree
 //dibuja un simple
-quadTree QT (50,300,300);
+quadTree QT (350,300,300);
 vector <vector <string> > characteristics;
 vector <point> area;
 

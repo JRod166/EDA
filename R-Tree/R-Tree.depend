@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1541723469 source:c:\users\rodrigo\documents\github\eda\r-tree\main.cpp
+1543078667 source:c:\users\rodrigo\documents\github\eda\r-tree\main.cpp
 	<windows.h>
 	<iostream>
 	<math.h>
@@ -13,18 +13,20 @@
 	<GL/gl.h>
 	<GL/glu.h>
 
-1541723507 source:c:\users\rodrigo\documents\github\eda\r-tree\src\rtree.cpp
+1543078732 source:c:\users\rodrigo\documents\github\eda\r-tree\src\rtree.cpp
 	"RTree.h"
 
-1541712616 c:\users\rodrigo\documents\github\eda\r-tree\include\rtree.h
-	<Node.h>
+1543075851 c:\users\rodrigo\documents\github\eda\r-tree\include\rtree.h
+	"Node.h"
+	<stack>
 
-1541697324 source:c:\users\rodrigo\documents\github\eda\r-tree\src\node.cpp
+1543074343 source:c:\users\rodrigo\documents\github\eda\r-tree\src\node.cpp
 	"Node.h"
 
-1541694286 c:\users\rodrigo\documents\github\eda\r-tree\include\node.h
+1543075201 c:\users\rodrigo\documents\github\eda\r-tree\include\node.h
 	<utility>
 	<vector>
-	<cmath>
+	<math.h>
+	<algorithm>
 	<iostream>
 
