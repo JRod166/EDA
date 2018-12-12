@@ -17,7 +17,6 @@ class RTree
         void adjusttree (Node**& p,stack<Node**>& path);
         void splitNode (Node**& p,stack<Node**>& path);
         void pickseeds (int& ii, int& jj, Node** p);
-        bool findpointleaf (Node**& p,point d);
         bool overlap(point p, point gmin, point gmax);
         void picknext (int& ii, Node** p,vector<Node*>&temp,Node* l, Node* r,typecor& d1f,typecor& d2f);
         typecor area (point cmin, point cmax);

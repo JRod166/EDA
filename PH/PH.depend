@@ -1,0 +1,31 @@
+# depslib dependency file v1.0
+1544635364 source:c:\users\rodrigo\documents\github\eda\ph\main.cpp
+	<iostream>
+	"Patricia.h"
+	<fstream>
+
+1544635318 c:\users\rodrigo\documents\github\eda\ph\include\patricia.h
+	"Node.h"
+	"HyperDate.h"
+	<cmath>
+
+1544593713 c:\users\rodrigo\documents\github\eda\ph\include\node.h
+	<vector>
+	<string>
+	<iostream>
+
+1544588683 c:\users\rodrigo\documents\github\eda\ph\include\hyperdate.h
+	<vector>
+	<iostream>
+	<string>
+	<bitset>
+
+1544600051 source:c:\users\rodrigo\documents\github\eda\ph\src\hyperdate.cpp
+	"HyperDate.h"
+
+1544597029 source:c:\users\rodrigo\documents\github\eda\ph\src\node.cpp
+	"Node.h"
+
+1544635429 source:c:\users\rodrigo\documents\github\eda\ph\src\patricia.cpp
+	"Patricia.h"
+

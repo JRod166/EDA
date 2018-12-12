@@ -21,17 +21,11 @@ Node::Node(point d)
     data=new point (d);
 }
 
-Node::Node(point mi, point ma)
+Node::Node(point minim, point maxim)
 {
-    cmax= ma;
-    cmin= mi;
+    cmax= maxim;
+    cmin= minim;
     data=0;
-}
-
-void Node::update_rec(point mi, point ma)
-{
-    cmax= ma;
-    cmin= mi;
 }
 
 void Node::set_rec ()
@@ -39,22 +33,18 @@ void Node::set_rec ()
 
     if (data!=0)
     {
-       // cout<<"miniiiiii"<<endl;
         cmin=make_pair(data->first-dis,data->second-dis);
         cmax=make_pair(data->first+dis,data->second+dis);
     }
     else
     {
-       // cout<<"envolvente"<<endl;
         typecor xmin,ymin,xmax,ymax;
         vector <point> temp;
-
         for (int unsigned i=0;i<children.size();i++)
         {
             temp.push_back(children[i]->cmin);
             temp.push_back(children[i]->cmax);
         }
-
         sort(temp.begin(),temp.end(),byfirst);
         xmin=temp[0].first;
         xmax=temp[temp.size()-1].first;

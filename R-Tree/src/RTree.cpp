@@ -18,45 +18,16 @@ bool RTree::overlap(point p, point gmin, point gmax)
         return 1;
     return 0;
 }
-
-bool RTree::findpointleaf (Node**& p,point d)
-{
-    if ((*p)->data!=0){
-        if ((*(*p)->data)==d)
-            return 1;
-        return 0;
-    }
-
-    vector<Node**> possibleleafs;
-    for (int unsigned i=0;i<(*p)->children.size();i++)
-    {
-        if(overlap(d,(*p)->children[i]->cmin,(*p)->children[i]->cmax))
-            possibleleafs.push_back(&((*p)->children[i]));
-    }
-    cout<<possibleleafs.size();
-    for(int unsigned j=0;j<possibleleafs.size();j++)
-    {
-            p=possibleleafs[j];
-            if(findpointleaf(p,d)){
-                break;
-            }
-    }
-
-}
-
 void RTree::chooseleaf (point d, Node**& p, stack<Node**>& path)
 {
     path.push(p);
-    //cout<<"HIJOS: "<<(*p)->children.size()<<endl;
     if ((*p)->children.size()==0 || (*p)->children[0]->data!=0){
-       // cout<<(*p)->data<<endl;
         return;
     }
-   // cout<<"sale"<<endl;
     Node** F=&((*p)->children[0]);
-    for (int unsigned i=1;i<(*p)->children.size();i++)
+    for (int i=1;i<(*p)->children.size();i++)
     {
-        if (distance_rec_point(d,(*p)->children[i]->cmin,(*p)->children[i]->cmax)<distance_rec_point(d,(*F)->cmin,(*F)->cmax))
+        if (distance_rec_point(d,(*p)->children[i]->cmin,(*p)->children[i]->cmax)< distance_rec_point(d,(*F)->cmin,(*F)->cmax))
             F=&((*p)->children[i]);
         else if  (distance_rec_point(d,(*p)->children[i]->cmin,(*p)->children[i]->cmax)==distance_rec_point(d,(*F)->cmin,(*F)->cmax))
         {
@@ -66,7 +37,6 @@ void RTree::chooseleaf (point d, Node**& p, stack<Node**>& path)
     }
     p=F;
     chooseleaf(d,p,path);
-  //  cout<<"DONE WELL CHoosE"<<endl;
 }
 
 void RTree::Insert(point d)
@@ -81,15 +51,11 @@ void RTree::Insert(point d)
             splitNode(p,path);
         }
     adjusttree(p,path);
-
-   cout<<d.first<<","<<d.second<<" added."<<endl;
 }
 
 void RTree::adjusttree (Node**& p, stack<Node**>& path)
 {
-   // cout<<path.size()<<endl;
-  // cout<<path.size()<<endl;
-  (*path.top())->set_rec();
+    (*path.top())->set_rec();
     if((*path.top())->children.size()>m){
         splitNode(path.top(),path);
     (*path.top())->set_rec();
@@ -99,7 +65,6 @@ void RTree::adjusttree (Node**& p, stack<Node**>& path)
     path.pop();
     p=path.top();
     adjusttree(p,path);
-    //cout<<"DONE WELL AJUST"<<endl;
 }
 
 void RTree::splitNode (Node**& p, stack<Node**>& path)
@@ -117,7 +82,7 @@ void RTree::splitNode (Node**& p, stack<Node**>& path)
     temp.erase(temp.begin()+j);
     temp.erase(temp.begin()+i);
     typecor d1,d2;
-    for (int unsigned k=0;k<(*p)->children.size()-2;k++)
+    for (int k=0;k<(*p)->children.size()-2;k++)
     {
         if (l->children.size()>(m/2))
         {
@@ -173,7 +138,7 @@ void RTree::splitNode (Node**& p, stack<Node**>& path)
     }
 
 
-    if(p==&root)
+    if(p==&root) //split root
     {
         Node* aux=new Node;
         aux->children.push_back(l);
@@ -183,13 +148,12 @@ void RTree::splitNode (Node**& p, stack<Node**>& path)
     else
     {
         path.pop();
-        for (int unsigned e=0;e<(*path.top())->children.size();e++){
+        for (int e=0;e<(*path.top())->children.size();e++){
             if((*path.top())->children[e]==*p)
             {
                 (*path.top())->children.erase((*path.top())->children.begin()+e);
             }
         }
-        //(*path.top())->children.pop_back();
         (*path.top())->children.push_back(l);
         (*path.top())->children.push_back(r);
         (*path.top())->set_rec();
@@ -213,7 +177,7 @@ void RTree::picknext (int& ii, Node** p, vector<Node*>&temp,Node* l, Node* r,typ
     typecor difference=0;
     typecor d1,d2;
     ii=0;
-    for (int unsigned k=0;k<temp.size();k++)
+    for (int k=0;k<temp.size();k++)
     {
         point cmin,cmax;
 
@@ -241,19 +205,19 @@ void RTree::pickseeds (int& ii, int& jj ,Node** p)
     point cmin,cmax;
     ii=0;
     jj=1;
-    for(int unsigned i=0;i<(*p)->children.size();i++)
-            for(int unsigned j=i+1; j<(*p)->children.size();j++ )
-                {
-                    newLimits((*p)->children[i]->cmin,(*p)->children[i]->cmax,(*p)->children[j]->cmin,(*p)->children[j]->cmax,cmin,cmax);
-                    //cout<<cmin.first<<","<<cmin.second<<" "<<cmax.first<<","<<cmax.second<<endl;
-                    aux=area(cmin,cmax)-area((*p)->children[i]->cmin,(*p)->children[i]->cmax)-area((*p)->children[j]->cmin,(*p)->children[j]->cmax);
-                 ///   cout<<"aux: "<<aux<<endl;
-                    if (aux>maxArea)
-                    {
-                        maxArea=aux;
-                        ii=i;jj=j;
-                    }
-                }
+    for(int i=0;i<(*p)->children.size();i++)
+    {
+        for(int j=i+1; j<(*p)->children.size();j++ )
+        {
+            newLimits((*p)->children[i]->cmin,(*p)->children[i]->cmax,(*p)->children[j]->cmin,(*p)->children[j]->cmax,cmin,cmax);
+            aux=area(cmin,cmax)-area((*p)->children[i]->cmin,(*p)->children[i]->cmax)-area((*p)->children[j]->cmin,(*p)->children[j]->cmax);
+            if (aux>maxArea)
+            {
+                maxArea=aux;
+                ii=i;jj=j;
+            }
+        }
+    }
 }
 
 

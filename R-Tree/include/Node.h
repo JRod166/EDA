@@ -18,7 +18,6 @@ class Node
         point cmin, cmax;
         vector <Node*> children;
         point* data;
-        void update_rec (point minim, point maxim);
         void set_rec ();
         Node (point minim, point maxim);
         Node (point d);

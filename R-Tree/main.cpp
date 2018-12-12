@@ -11,7 +11,7 @@
 using namespace std;
 
 //Crear quad tree
-RTree RT(100);
+RTree RT(5);
 typecor radio=30;
 double px,py;
 vector<vector<string>> characteristics;
@@ -52,7 +52,7 @@ void insertPoints(int xposition, int yposition)
     {
         auxx=((stod(characteristics[i][xposition])/41.84307539)-1)*60000;
         auxy=((stod(characteristics[i][yposition])/-87.67370828)-1)*60000;
-        cout<<i<<". Adding point: ( "<<auxx<<" , "<<auxy<<" )"<<endl;
+        //cout<<i<<". Adding point: ( "<<auxx<<" , "<<auxy<<" )"<<endl;
         RT.Insert(make_pair(auxx,auxy));
     }
 }
@@ -104,16 +104,16 @@ void drawrt (Node** p)
     maxiX=(*p)->cmax.first;
     maxiY=(*p)->cmax.second;
     glBegin(GL_LINES);
-    glColor3d(255,50,50);
+    glColor3d(0,0,255);
 	glVertex2d(miniX,miniY);
 	glVertex2d(maxiX,miniY);
-	glColor3d(255,50, 50);
+	glColor3d(0,0,255);
 	glVertex2d(maxiX,miniY);
 	glVertex2d(maxiX,maxiY);
-	glColor3d(255,50,50);
+	glColor3d(0,0,255);
 	glVertex2d(miniX,maxiY);
 	glVertex2d(maxiX,maxiY);
-	glColor3d(255,50, 50);
+	glColor3d(0,0,255);
 	glVertex2d(miniX,miniY);
 	glVertex2d(miniX,maxiY);
 	glEnd();
@@ -131,7 +131,7 @@ void OnMouseClick(int button, int state, int x, int y)
 {
   if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
   {
-    cout<<". Adding point( "<<x-300<<" , "<<300-y<<")"<<endl;
+    //cout<<". Adding point( "<<x-300<<" , "<<300-y<<")"<<endl;
     RT.Insert(make_pair((x-300)*1.0,(300-y)*1.0));
 
     //convertir x,y
@@ -171,7 +171,7 @@ void glPaint(void) {
 	drawrt(&RT.root);
 	glBegin(GL_POINTS);
 	glPointSize(3);
-	glColor3d(255,255,255);
+	glColor3d(255,0,0);
 	for(int i=0;i<Area.size();i++)
     {
         glVertex2d(Area[i].first,Area[i].second);
@@ -229,7 +229,7 @@ int main(int argc, char** argv) {
 	glutCreateWindow("TP2 bis OpenGL : Bresenham"); //titulo de la ventana
 
     extractcharacteristics();
-	insertPoints(19,20);
+	//insertPoints(19,20);
 
 	init_GL(); //funcion de inicializacion de OpenGL
     glPointSize(3);
